@@ -1,4 +1,7 @@
+from suds.bindings import binding
 from suds.client import Client
+
+binding.envns = ('soap12', 'http://www.w3.org/2003/05/soap-envelope')
 
 DOMAINBOX_COMMANDS = {
     'AccountQueryBalance': 'AccountQueryBalanceParameters',
@@ -216,10 +219,9 @@ SANDBOX_URL = 'https://sandbox.domainbox.net/?WSDL'
 
 class DomainBox(object):
     def __init__(self, reseller, username, password, live=False):
-        if live is True:
-            self.client = Client(LIVE_URL)
-        else:
-            self.client = Client(SANDBOX_URL)
+        url = LIVE_URL if live else SANDBOX_URL
+
+        self.client = Client(url)
 
         self.factory = self.client.factory
         self.service = self.client.service
@@ -240,13 +242,13 @@ class DomainBox(object):
 
     def request(self, name, **kwargs):
         command_params = self.load_command_params(name, **kwargs)
-        service = self.service.getattr(name)
+        service = self.service.__getattr__(name)
         return service(self.auth_params, command_params)
 
     def load_command_params(self, name, **params):
         params_type = self.factory.create(DOMAINBOX_COMMANDS[name])
         for k, v in params.iteritems():
-            params_type.setattr(studly_case(k), v)
+            params_type.__setattr__(studly_case(k), v)
         return params_type
 
 
