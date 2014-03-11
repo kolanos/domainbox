@@ -1,15 +1,225 @@
 from suds.client import Client
 
+DOMAINBOX_COMMANDS = {
+    'AccountQueryBalance': 'AccountQueryBalanceParameters',
+    'AddPublishingAlias': 'AddPublishingAliasParameters',
+    'AddWebHostingDatabase': 'AddWebHostingDatabaseParameters',
+    'AddWebHostingDatabaseUser': 'AddWebHostingDatabaseUserParameters',
+    'AddWebHostingFTPUser': 'AddWebHostingFTPUserParameters',
+    'AddWebHostingWebsite': 'AddWebHostingWebsiteParameters',
+    'AddWebHostingWebsiteAlias': 'AddWebHostingWebsiteAliasParameters',
+    'AddWebHostingWebsiteApp': 'AddWebHostingWebsiteAppParameters',
+    'AssignDomain': 'AssignDomainParameters',
+    'AssignWebHostingDatabaseUser': 'AssignWebHostingDatabaseUserParameters',
+    'AssignWebHostingFTPUser': 'AssignWebHostingFTPUserParameters',
+    'CancelBackOrder': 'CancelBackOrderParameters',
+    'CancelPremiumDomain': 'CancelPremiumDomainParameters',
+    'CancelSSL': 'CancelSSLParameters',
+    'CancelTransfer': 'CancelTransferParameters',
+    'CancelTransition': 'CancelTransitionParameters',
+    'CheckDomainAvailability': 'CheckDomainAvailabilityParameters',
+    'CheckDomainAvailabilityBulkQuery':
+        'CheckDomainAvailabilityBulkQueryParameters',
+    'CheckDomainAvailabilityBulkSubmit':
+        'CheckDomainAvailabilityBulkSubmitParameters',
+    'CheckDomainAvailabilityPlus': 'CheckDomainAvailabilityPlusParameters',
+    'CheckDomainClaims': 'CheckDomainClaimsParameters',
+    'CheckDomainValue': 'CheckDomainValueParameters',
+    'CheckPremiumDomain': 'CheckPremiumDomainParameters',
+    'CheckReportStatus': 'CheckReportStatusParameters',
+    'CheckSSLCSR': 'CheckSSLCSRParameters',
+    'CheckTLDDocumentation': 'CheckTLDDocumentationParameters',
+    'CheckTransferAvailability': 'CheckTransferAvailabilityParameters',
+    'CheckTransition': 'CheckTransitionParameters',
+    'CompleteTransferAway': 'CompleteTransferAwayParameters',
+    'CreateContact': 'CreateContactParameters',
+    'CreateDnsRecords': 'CreateDnsRecordsParameters',
+    'CreateDnsZone': 'CreateDnsZoneParameters',
+    'CreateDomainAuthcode': 'CreateDomainAuthcodeParameters',
+    'CreateEmailForwarder': 'CreateEmailForwarderParameters',
+    'CreateEmailMailbox': 'CreateEmailMailboxParameters',
+    'CreateExternalNameserver': 'CreateExternalNameserverParameters',
+    'CreateNameserver': 'CreateNameserverParameters',
+    'CreatePublishing': 'CreatePublishingParameters',
+    'CreateStorefront': 'CreateStorefrontParameters',
+    'CreateSubReseller': 'CreateSubResellerParameters',
+    'CreateTrademark': 'CreateTrademarkParameters',
+    'CreateUser': 'CreateUserParameters',
+    'CreateUserGroup': 'CreateUserGroupParameters',
+    'CreateUserRoles': 'CreateUserRolesParameters',
+    'CreateWebHosting': 'CreateWebHostingParameters',
+    'DeleteContact': 'DeleteContactParameters',
+    'DeleteDnsRecords': 'DeleteDnsRecordsParameters',
+    'DeleteDnsZone': 'DeleteDnsZoneParameters',
+    'DeleteDomain': 'DeleteDomainParameters',
+    'DeleteEmail': 'DeleteEmailParameters',
+    'DeleteNameserver': 'DeleteNameserverParameters',
+    'DeletePublishing': 'DeletePublishingParameters',
+    'DeletePublishingAlias': 'DeletePublishingAliasParameters',
+    'DeleteTrademark': 'DeleteTrademarkParameters',
+    'DeleteUser': 'DeleteUserParameters',
+    'DeleteUserGroup': 'DeleteUserGroupParameters',
+    'DeleteUserRoles': 'DeleteUserRolesParameters',
+    'DeleteWebHostingDatabase': 'DeleteWebHostingDatabaseParameters',
+    'DeleteWebHostingDatabaseUser': 'DeleteWebHostingDatabaseUserParameters',
+    'DeleteWebHostingFTPUser': 'DeleteWebHostingFTPUserParameters',
+    'DeleteWebHostingWebsite': 'DeleteWebHostingWebsiteParameters',
+    'DeleteWebHostingWebsiteAlias': 'DeleteWebHostingWebsiteAliasParameters',
+    'DeleteWebHostingWebsiteApp': 'DeleteWebHostingWebsiteAppParameters',
+    'DisablePublishing': 'DisablePublishingParameters',
+    'EnablePublishing': 'EnablePublishingParameters',
+    'GetDomainboxContactIds': 'GetDomainboxContactIdsParameters',
+    'GetRegistryContactId': 'GetRegistryContactIdParameters',
+    'InviteSSL': 'InviteSSLParameters',
+    'ListPremiumDomain': 'ListPremiumDomainParameters',
+    'ModifyBackOrder': 'ModifyBackOrderParameters',
+    'ModifyContact': 'ModifyContactParameters',
+    'ModifyDnsRecords': 'ModifyDnsRecordsParameters',
+    'ModifyDomainAdditionalData': 'ModifyDomainAdditionalDataParameters',
+    'ModifyDomainAuthcode': 'ModifyDomainAuthcodeParameters',
+    'ModifyDomainContacts': 'ModifyDomainContactsParameters',
+    'ModifyDomainLock': 'ModifyDomainLockParameters',
+    'ModifyDomainMemberContact': 'ModifyDomainMemberContactParameters',
+    'ModifyDomainNameservers': 'ModifyDomainNameserversParameters',
+    'ModifyDomainPrivacy': 'ModifyDomainPrivacyParameters',
+    'ModifyDomainProxy': 'ModifyDomainProxyParameters',
+    'ModifyDomainRecords': 'ModifyDomainRecordsParameters',
+    'ModifyDomainRenewalSettings': 'ModifyDomainRenewalSettingsParameters',
+    'ModifyDomainStatus': 'ModifyDomainStatusParameters',
+    'ModifyDomainTelCredentials': 'ModifyDomainTelCredentialsParameters',
+    'ModifyEmailDomainBlackList': 'ModifyEmailDomainBlackListParameters',
+    'ModifyEmailDomainWhiteList': 'ModifyEmailDomainWhiteListParameters',
+    'ModifyEmailMailboxAutoResponder':
+        'ModifyEmailMailboxAutoResponderParameters',
+    'ModifyEmailMailboxBlackList': 'ModifyEmailMailboxBlackListParameters',
+    'ModifyEmailMailboxForwarding': 'ModifyEmailMailboxForwardingParameters',
+    'ModifyEmailMailboxPassword': 'ModifyEmailMailboxPasswordParameters',
+    'ModifyEmailMailboxSpamOption': 'ModifyEmailMailboxSpamOptionParameters',
+    'ModifyEmailMailboxWhiteList': 'ModifyEmailMailboxWhiteListParameters',
+    'ModifyEmailRenewalSettings': 'ModifyEmailRenewalSettingsParameters',
+    'ModifyNameserver': 'ModifyNameserverParameters',
+    'ModifyPremiumDomain': 'ModifyPremiumDomainParameters',
+    'ModifyPremiumDomainHold': 'ModifyPremiumDomainHoldParameters',
+    'ModifyPublishing': 'ModifyPublishingParameters',
+    'ModifyPublishingRenewalSettings':
+            'ModifyPublishingRenewalSettingsParameters',
+    'ModifyResellerConfig': 'ModifyResellerConfigParameters',
+    'ModifySSLApproverEmail': 'ModifySSLApproverEmailParameters',
+    'ModifySSLSealPreference': 'ModifySSLSealPreferenceParameters',
+    'ModifyTrademark': 'ModifyTrademarkParameters',
+    'ModifyTransition': 'ModifyTransitionParameters',
+    'ModifyUser': 'ModifyUserParameters',
+    'ModifyUserGroup': 'ModifyUserGroupParameters',
+    'ModifyUserRoles': 'ModifyUserRolesParameters',
+    'ModifyWebHosting': 'ModifyWebHostingParameters',
+    'ModifyWebHostingFTPUser': 'ModifyWebHostingFTPUserParameters',
+    'MsgQueueAcknowledge': 'MsgQueueAcknowledgeParameters',
+    'MsgQueueRequest': 'MsgQueueRequestParameters',
+    'OrderSSL': 'OrderSSLParameters',
+    'ParkingAddDomain': 'ParkingAddDomainParameters',
+    'ParkingGetStats': 'ParkingGetStatsParameters',
+    'ParkingRemoveDomain': 'ParkingRemoveDomainParameters',
+    'PerformAsyncCommands': 'PerformAsyncCommandsParameters',
+    'ProcessLaunchDomain': 'ProcessLaunchDomainParameters',
+    'PurchasePremiumDomain': 'PurchasePremiumDomainParameters',
+    'QueryBackOrder': 'QueryBackOrderParameters',
+    'QueryContact': 'QueryContactParameters',
+    'QueryDnsRecords': 'QueryDnsRecordsParameters',
+    'QueryDnsZone': 'QueryDnsZoneParameters',
+    'QueryDomain': 'QueryDomainParameters',
+    'QueryDomainAuthcode': 'QueryDomainAuthcodeParameters',
+    'QueryDomainContacts': 'QueryDomainContactsParameters',
+    'QueryDomainDates': 'QueryDomainDatesParameters',
+    'QueryDomainLaunch': 'QueryDomainLaunchParameters',
+    'QueryDomainLock': 'QueryDomainLockParameters',
+    'QueryDomainMemberContact': 'QueryDomainMemberContactParameters',
+    'QueryDomainNameserverHosts': 'QueryDomainNameserverHostsParameters',
+    'QueryDomainNameservers': 'QueryDomainNameserversParameters',
+    'QueryDomainPrivacy': 'QueryDomainPrivacyParameters',
+    'QueryDomainRenewalSettings': 'QueryDomainRenewalSettingsParameters',
+    'QueryDomainTelCredentials': 'QueryDomainTelCredentialsParameters',
+    'QueryEmailDomainBlackList': 'QueryEmailDomainBlackListParameters',
+    'QueryEmailDomainWhiteList': 'QueryEmailDomainWhiteListParameters',
+    'QueryEmailForwarder': 'QueryEmailForwarderParameters',
+    'QueryEmailMailbox': 'QueryEmailMailboxParameters',
+    'QueryEmailMailboxBlackList': 'QueryEmailMailboxBlackListParameters',
+    'QueryEmailMailboxWhiteList': 'QueryEmailMailboxWhiteListParameters',
+    'QueryFinancialReport': 'QueryFinancialReportParameters',
+    'QueryLoginURL': 'QueryLoginURLParameters',
+    'QueryManagementReport': 'QueryManagementReportParameters',
+    'QueryNameserver': 'QueryNameserverParameters',
+    'QueryPerformanceReport': 'QueryPerformanceReportParameters',
+    'QueryPremiumDomain': 'QueryPremiumDomainParameters',
+    'QueryPublishing': 'QueryPublishingParameters',
+    'QueryPublishingControlURL': 'QueryPublishingControlURLParameters',
+    'QueryResellerConfig': 'QueryResellerConfigParameters',
+    'QuerySSL': 'QuerySSLParameters',
+    'QuerySSLApproverEmails': 'QuerySSLApproverEmailsParameters',
+    'QuerySSLStatus': 'QuerySSLStatusParameters',
+    'QueryTrademark': 'QueryTrademarkParameters',
+    'QueryTrademarkLabels': 'QueryTrademarkLabelsParameters',
+    'QueryTrademarkSMD': 'QueryTrademarkSMDParameters',
+    'QueryTransfer': 'QueryTransferParameters',
+    'QueryTransfersAway': 'QueryTransfersAwayParameters',
+    'QueryTransition': 'QueryTransitionParameters',
+    'QueryUser': 'QueryUserParameters',
+    'QueryUserGroup': 'QueryUserGroupParameters',
+    'QueryUserRoles': 'QueryUserRolesParameters',
+    'QueryWebHosting': 'QueryWebHostingParameters',
+    'QueryWebHostingApps': 'QueryWebHostingAppsParameters',
+    'QueryWebHostingDatabase': 'QueryWebHostingDatabaseParameters',
+    'QueryWebHostingDatabaseUser': 'QueryWebHostingDatabaseUserParameters',
+    'QueryWebHostingFTPUser': 'QueryWebHostingFTPUserParameters',
+    'QueryWebHostingPackage': 'QueryWebHostingPackageParameters',
+    'QueryWebHostingSharedSSL': 'QueryWebHostingSharedSSLParameters',
+    'QueryWebHostingUpgrade': 'QueryWebHostingUpgradeParameters',
+    'QueryWebHostingWebsite': 'QueryWebHostingWebsiteParameters',
+    'QueryWebHostingWebsiteApp': 'QueryWebHostingWebsiteAppParameters',
+    'RegisterDomain': 'RegisterDomainParameters',
+    'ReissueSSL': 'ReissueSSLParameters',
+    'RejectTransferAway': 'RejectTransferAwayParameters',
+    'RenewDomain': 'RenewDomainParameters',
+    'RenewEmailForwarder': 'RenewEmailForwarderParameters',
+    'RenewEmailMailbox': 'RenewEmailMailboxParameters',
+    'RenewPublishing': 'RenewPublishingParameters',
+    'RenewSSL': 'RenewSSLParameters',
+    'RenewWebHosting': 'RenewWebHostingParameters',
+    'RequestBackOrder': 'RequestBackOrderParameters',
+    'RequestTransfer': 'RequestTransferParameters',
+    'RequestTransferAway': 'RequestTransferAwayParameters',
+    'ResendDomainVerificationEmail': 'ResendDomainVerificationEmailParameters',
+    'ResendSSLEmail': 'ResendSSLEmailParameters',
+    'ResendTransferAdminEmail': 'ResendTransferAdminEmailParameters',
+    'RestartTransfer': 'RestartTransferParameters',
+    'RestartTransition': 'RestartTransitionParameters',
+    'RestoreDomain': 'RestoreDomainParameters',
+    'ResumeEmail': 'ResumeEmailParameters',
+    'StorefrontAssignDomainToUser': 'StorefrontAssignDomainToUserParameters',
+    'StorefrontCreatePackage': 'StorefrontCreatePackageParameters',
+    'StorefrontCreateUser': 'StorefrontCreateUserParameters',
+    'StorefrontDeleteUser': 'StorefrontDeleteUserParameters',
+    'StorefrontModifyUser': 'StorefrontModifyUserParameters',
+    'StorefrontQueryUser': 'StorefrontQueryUserParameters',
+    'StorefrontQueryUsers': 'StorefrontQueryUsersParameters',
+    'SuspendEmail': 'SuspendEmailParameters',
+    'UnassignWebHostingDatabaseUser':
+        'UnassignWebHostingDatabaseUserParameters',
+    'UnassignWebHostingFTPUser': 'UnassignWebHostingFTPUserParameters',
+    'UnrenewDomain': 'UnrenewDomainParameters',
+    'UpgradePublishing': 'UpgradePublishingParameters',
+    'UpgradeWebHosting': 'UpgradeWebHostingParameters'
+}
+
+LIVE_URL = 'https://live.domainbox.net/?WSDL'
+SANDBOX_URL = 'https://sandbox.domainbox.net/?WSDL'
+
 
 class DomainBox(object):
-    LIVE_URL = 'https://live.domainbox.net/?WSDL'
-    SANDBOX_URL = 'https://sandbox.domainbox.net/?WSDL'
-
     def __init__(self, reseller, username, password, live=False):
         if live is True:
-            self.client = Client(self.LIVE_URL)
+            self.client = Client(LIVE_URL)
         else:
-            self.client = Client(self.SANDBOX_URL)
+            self.client = Client(SANDBOX_URL)
 
         self.factory = self.client.factory
         self.service = self.client.service
@@ -19,223 +229,28 @@ class DomainBox(object):
         self.auth_params.Reseller = reseller
         self.auth_params.Username = username
         self.auth_params.Password = password
+
     def __getattr__(self, name):
-        if name in DOMAINBOX_SERVICES:
+        name = studly_case(name)
+        if name in DOMAINBOX_COMMANDS.keys():
             def request_handler(**kwargs):
                 return self.request(name, **kwargs)
             return request_handler
         return super(DomainBox, self).__getattr__(name)
 
     def request(self, name, **kwargs):
-        command_params = self.load_type_params(name, **kwargs)
+        command_params = self.load_command_params(name, **kwargs)
         service = self.service.getattr(name)
         return service(AuthenticationParameters=self.auth_params,
                        CommandParameters=command_params)
 
-    def load_type_params(self, name, **params):
-        command_type = DOMAINBOX_COMMANDS[name]
+    def load_command_params(self, name, **params):
+        params_type = self.factory.create(DOMAINBOX_COMMANDS[name])
+        for k, v in params.iteritems():
+            params_type.setattr(studly_case(k), v)
+        return params_type
 
-    """
-    AccountQueryBalance(AuthenticationParameters AuthenticationParameters, AccountQueryBalanceParameters CommandParameters, )
-    AddPublishingAlias(AuthenticationParameters AuthenticationParameters, AddPublishingAliasParameters CommandParameters, )
-    AddWebHostingDatabase(AuthenticationParameters AuthenticationParameters, AddWebHostingDatabaseParameters CommandParameters, )
-    AddWebHostingDatabaseUser(AuthenticationParameters AuthenticationParameters, AddWebHostingDatabaseUserParameters CommandParameters, )
-    AddWebHostingFTPUser(AuthenticationParameters AuthenticationParameters, AddWebHostingFTPUserParameters CommandParameters, )
-    AddWebHostingWebsite(AuthenticationParameters AuthenticationParameters, AddWebHostingWebsiteParameters CommandParameters, )
-    AddWebHostingWebsiteAlias(AuthenticationParameters AuthenticationParameters, AddWebHostingWebsiteAliasParameters CommandParameters, )
-    AddWebHostingWebsiteApp(AuthenticationParameters AuthenticationParameters, AddWebHostingWebsiteAppParameters CommandParameters, )
-    AssignDomain(AuthenticationParameters AuthenticationParameters, AssignDomainParameters CommandParameters, )
-    AssignWebHostingDatabaseUser(AuthenticationParameters AuthenticationParameters, AssignWebHostingDatabaseUserParameters CommandParameters, )
-    AssignWebHostingFTPUser(AuthenticationParameters AuthenticationParameters, AssignWebHostingFTPUserParameters CommandParameters, )
-    CancelBackOrder(AuthenticationParameters AuthenticationParameters, CancelBackOrderParameters CommandParameters, )
-    CancelPremiumDomain(AuthenticationParameters AuthenticationParameters, CancelPremiumDomainParameters CommandParameters, )
-    CancelSSL(AuthenticationParameters AuthenticationParameters, CancelSSLParameters CommandParameters, )
-    CancelTransfer(AuthenticationParameters AuthenticationParameters, CancelTransferParameters CommandParameters, )
-    CancelTransition(AuthenticationParameters AuthenticationParameters, CancelTransitionParameters CommandParameters, )
-    CheckDomainAvailability(AuthenticationParameters AuthenticationParameters, CheckDomainAvailabilityParameters CommandParameters, )
-    CheckDomainAvailabilityBulkQuery(AuthenticationParameters AuthenticationParameters, CheckDomainAvailabilityBulkQueryParameters CommandParameters, )
-    CheckDomainAvailabilityBulkSubmit(AuthenticationParameters AuthenticationParameters, CheckDomainAvailabilityBulkSubmitParameters CommandParameters, )
-    CheckDomainAvailabilityPlus(AuthenticationParameters AuthenticationParameters, CheckDomainAvailabilityPlusParameters CommandParameters, )
-    CheckDomainClaims(AuthenticationParameters AuthenticationParameters, CheckDomainClaimsParameters CommandParameters, )
-    CheckDomainValue(AuthenticationParameters AuthenticationParameters, CheckDomainValueParameters CommandParameters, )
-    CheckPremiumDomain(AuthenticationParameters AuthenticationParameters, CheckPremiumDomainParameters CommandParameters, )
-    CheckReportStatus(AuthenticationParameters AuthenticationParameters, CheckReportStatusParameters CommandParameters, )
-    CheckSSLCSR(AuthenticationParameters AuthenticationParameters, CheckSSLCSRParameters CommandParameters, )
-    CheckTLDDocumentation(AuthenticationParameters AuthenticationParameters, CheckTLDDocumentationParameters CommandParameters, )
-    CheckTransferAvailability(AuthenticationParameters AuthenticationParameters, CheckTransferAvailabilityParameters CommandParameters, )
-    CheckTransition(AuthenticationParameters AuthenticationParameters, CheckTransitionParameters CommandParameters, )
-    CompleteTransferAway(AuthenticationParameters AuthenticationParameters, CompleteTransferAwayParameters CommandParameters, )
-    CreateContact(AuthenticationParameters AuthenticationParameters, CreateContactParameters CommandParameters, )
-    CreateDnsRecords(AuthenticationParameters AuthenticationParameters, CreateDnsRecordsParameters CommandParameters, )
-    CreateDnsZone(AuthenticationParameters AuthenticationParameters, CreateDnsZoneParameters CommandParameters, )
-    CreateDomainAuthcode(AuthenticationParameters AuthenticationParameters, CreateDomainAuthcodeParameters CommandParameters, )
-    CreateEmailForwarder(AuthenticationParameters AuthenticationParameters, CreateEmailForwarderParameters CommandParameters, )
-    CreateEmailMailbox(AuthenticationParameters AuthenticationParameters, CreateEmailMailboxParameters CommandParameters, )
-    CreateExternalNameserver(AuthenticationParameters AuthenticationParameters, CreateExternalNameserverParameters CommandParameters, )
-    CreateNameserver(AuthenticationParameters AuthenticationParameters, CreateNameserverParameters CommandParameters, )
-    CreatePublishing(AuthenticationParameters AuthenticationParameters, CreatePublishingParameters CommandParameters, )
-    CreateStorefront(AuthenticationParameters AuthenticationParameters, CreateStorefrontParameters CommandParameters, )
-    CreateSubReseller(AuthenticationParameters AuthenticationParameters, CreateSubResellerParameters CommandParameters, )
-    CreateTrademark(AuthenticationParameters AuthenticationParameters, CreateTrademarkParameters CommandParameters, )
-    CreateUser(AuthenticationParameters AuthenticationParameters, CreateUserParameters CommandParameters, )
-    CreateUserGroup(AuthenticationParameters AuthenticationParameters, CreateUserGroupParameters CommandParameters, )
-    CreateUserRoles(AuthenticationParameters AuthenticationParameters, CreateUserRolesParameters CommandParameters, )
-    CreateWebHosting(AuthenticationParameters AuthenticationParameters, CreateWebHostingParameters CommandParameters, )
-    DeleteContact(AuthenticationParameters AuthenticationParameters, DeleteContactParameters CommandParameters, )
-    DeleteDnsRecords(AuthenticationParameters AuthenticationParameters, DeleteDnsRecordsParameters CommandParameters, )
-    DeleteDnsZone(AuthenticationParameters AuthenticationParameters, DeleteDnsZoneParameters CommandParameters, )
-    DeleteDomain(AuthenticationParameters AuthenticationParameters, DeleteDomainParameters CommandParameters, )
-    DeleteEmail(AuthenticationParameters AuthenticationParameters, DeleteEmailParameters CommandParameters, )
-    DeleteNameserver(AuthenticationParameters AuthenticationParameters, DeleteNameserverParameters CommandParameters, )
-    DeletePublishing(AuthenticationParameters AuthenticationParameters, DeletePublishingParameters CommandParameters, )
-    DeletePublishingAlias(AuthenticationParameters AuthenticationParameters, DeletePublishingAliasParameters CommandParameters, )
-    DeleteTrademark(AuthenticationParameters AuthenticationParameters, DeleteTrademarkParameters CommandParameters, )
-    DeleteUser(AuthenticationParameters AuthenticationParameters, DeleteUserParameters CommandParameters, )
-    DeleteUserGroup(AuthenticationParameters AuthenticationParameters, DeleteUserGroupParameters CommandParameters, )
-    DeleteUserRoles(AuthenticationParameters AuthenticationParameters, DeleteUserRolesParameters CommandParameters, )
-    DeleteWebHostingDatabase(AuthenticationParameters AuthenticationParameters, DeleteWebHostingDatabaseParameters CommandParameters, )
-    DeleteWebHostingDatabaseUser(AuthenticationParameters AuthenticationParameters, DeleteWebHostingDatabaseUserParameters CommandParameters, )
-    DeleteWebHostingFTPUser(AuthenticationParameters AuthenticationParameters, DeleteWebHostingFTPUserParameters CommandParameters, )
-    DeleteWebHostingWebsite(AuthenticationParameters AuthenticationParameters, DeleteWebHostingWebsiteParameters CommandParameters, )
-    DeleteWebHostingWebsiteAlias(AuthenticationParameters AuthenticationParameters, DeleteWebHostingWebsiteAliasParameters CommandParameters, )
-    DeleteWebHostingWebsiteApp(AuthenticationParameters AuthenticationParameters, DeleteWebHostingWebsiteAppParameters CommandParameters, )
-    DisablePublishing(AuthenticationParameters AuthenticationParameters, DisablePublishingParameters CommandParameters, )
-    EnablePublishing(AuthenticationParameters AuthenticationParameters, EnablePublishingParameters CommandParameters, )
-    GetDomainboxContactIds(AuthenticationParameters AuthenticationParameters, GetDomainboxContactIdsParameters CommandParameters, )
-    GetRegistryContactId(AuthenticationParameters AuthenticationParameters, GetRegistryContactIdParameters CommandParameters, )
-    InviteSSL(AuthenticationParameters AuthenticationParameters, InviteSSLParameters CommandParameters, )
-    ListPremiumDomain(AuthenticationParameters AuthenticationParameters, ListPremiumDomainParameters CommandParameters, )
-    ModifyBackOrder(AuthenticationParameters AuthenticationParameters, ModifyBackOrderParameters CommandParameters, )
-    ModifyContact(AuthenticationParameters AuthenticationParameters, ModifyContactParameters CommandParameters, )
-    ModifyDnsRecords(AuthenticationParameters AuthenticationParameters, ModifyDnsRecordsParameters CommandParameters, )
-    ModifyDomainAdditionalData(AuthenticationParameters AuthenticationParameters, ModifyDomainAdditionalDataParameters CommandParameters, )
-    ModifyDomainAuthcode(AuthenticationParameters AuthenticationParameters, ModifyDomainAuthcodeParameters CommandParameters, )
-    ModifyDomainContacts(AuthenticationParameters AuthenticationParameters, ModifyDomainContactsParameters CommandParameters, )
-    ModifyDomainLock(AuthenticationParameters AuthenticationParameters, ModifyDomainLockParameters CommandParameters, )
-    ModifyDomainMemberContact(AuthenticationParameters AuthenticationParameters, ModifyDomainMemberContactParameters CommandParameters, )
-    ModifyDomainNameservers(AuthenticationParameters AuthenticationParameters, ModifyDomainNameserversParameters CommandParameters, )
-    ModifyDomainPrivacy(AuthenticationParameters AuthenticationParameters, ModifyDomainPrivacyParameters CommandParameters, )
-    ModifyDomainProxy(AuthenticationParameters AuthenticationParameters, ModifyDomainProxyParameters CommandParameters, )
-    ModifyDomainRecords(AuthenticationParameters AuthenticationParameters, ModifyDomainRecordsParameters CommandParameters, )
-    ModifyDomainRenewalSettings(AuthenticationParameters AuthenticationParameters, ModifyDomainRenewalSettingsParameters CommandParameters, )
-    ModifyDomainStatus(AuthenticationParameters AuthenticationParameters, ModifyDomainStatusParameters CommandParameters, )
-    ModifyDomainTelCredentials(AuthenticationParameters AuthenticationParameters, ModifyDomainTelCredentialsParameters CommandParameters, )
-    ModifyEmailDomainBlackList(AuthenticationParameters AuthenticationParameters, ModifyEmailDomainBlackListParameters CommandParameters, )
-    ModifyEmailDomainWhiteList(AuthenticationParameters AuthenticationParameters, ModifyEmailDomainWhiteListParameters CommandParameters, )
-    ModifyEmailMailboxAutoResponder(AuthenticationParameters AuthenticationParameters, ModifyEmailMailboxAutoResponderParameters CommandParameters, )
-    ModifyEmailMailboxBlackList(AuthenticationParameters AuthenticationParameters, ModifyEmailMailboxBlackListParameters CommandParameters, )
-    ModifyEmailMailboxForwarding(AuthenticationParameters AuthenticationParameters, ModifyEmailMailboxForwardingParameters CommandParameters, )
-    ModifyEmailMailboxPassword(AuthenticationParameters AuthenticationParameters, ModifyEmailMailboxPasswordParameters CommandParameters, )
-    ModifyEmailMailboxSpamOption(AuthenticationParameters AuthenticationParameters, ModifyEmailMailboxSpamOptionParameters CommandParameters, )
-    ModifyEmailMailboxWhiteList(AuthenticationParameters AuthenticationParameters, ModifyEmailMailboxWhiteListParameters CommandParameters, )
-    ModifyEmailRenewalSettings(AuthenticationParameters AuthenticationParameters, ModifyEmailRenewalSettingsParameters CommandParameters, )
-    ModifyNameserver(AuthenticationParameters AuthenticationParameters, ModifyNameserverParameters CommandParameters, )
-    ModifyPremiumDomain(AuthenticationParameters AuthenticationParameters, ModifyPremiumDomainParameters CommandParameters, )
-    ModifyPremiumDomainHold(AuthenticationParameters AuthenticationParameters, ModifyPremiumDomainHoldParameters CommandParameters, )
-    ModifyPublishing(AuthenticationParameters AuthenticationParameters, ModifyPublishingParameters CommandParameters, )
-    ModifyPublishingRenewalSettings(AuthenticationParameters AuthenticationParameters, ModifyPublishingRenewalSettingsParameters CommandParameters, )
-    ModifyResellerConfig(AuthenticationParameters AuthenticationParameters, ModifyResellerConfigParameters CommandParameters, )
-    ModifySSLApproverEmail(AuthenticationParameters AuthenticationParameters, ModifySSLApproverEmailParameters CommandParameters, )
-    ModifySSLSealPreference(AuthenticationParameters AuthenticationParameters, ModifySSLSealPreferenceParameters CommandParameters, )
-    ModifyTrademark(AuthenticationParameters AuthenticationParameters, ModifyTrademarkParameters CommandParameters, )
-    ModifyTransition(AuthenticationParameters AuthenticationParameters, ModifyTransitionParameters CommandParameters, )
-    ModifyUser(AuthenticationParameters AuthenticationParameters, ModifyUserParameters CommandParameters, )
-    ModifyUserGroup(AuthenticationParameters AuthenticationParameters, ModifyUserGroupParameters CommandParameters, )
-    ModifyUserRoles(AuthenticationParameters AuthenticationParameters, ModifyUserRolesParameters CommandParameters, )
-    ModifyWebHosting(AuthenticationParameters AuthenticationParameters, ModifyWebHostingParameters CommandParameters, )
-    ModifyWebHostingFTPUser(AuthenticationParameters AuthenticationParameters, ModifyWebHostingFTPUserParameters CommandParameters, )
-    MsgQueueAcknowledge(AuthenticationParameters AuthenticationParameters, MsgQueueAcknowledgeParameters CommandParameters, )
-    MsgQueueRequest(AuthenticationParameters AuthenticationParameters, MsgQueueRequestParameters CommandParameters, )
-    OrderSSL(AuthenticationParameters AuthenticationParameters, OrderSSLParameters CommandParameters, )
-    ParkingAddDomain(AuthenticationParameters AuthenticationParameters, ParkingAddDomainParameters CommandParameters, )
-    ParkingGetStats(AuthenticationParameters AuthenticationParameters, ParkingGetStatsParameters CommandParameters, )
-    ParkingRemoveDomain(AuthenticationParameters AuthenticationParameters, ParkingRemoveDomainParameters CommandParameters, )
-    PerformAsyncCommands(StoreAuthenticationParameters AuthenticationParameters, PerformAsyncCommandsParameters CommandParameters, )
-    ProcessLaunchDomain(AuthenticationParameters AuthenticationParameters, ProcessLaunchDomainParameters CommandParameters, )
-    PurchasePremiumDomain(AuthenticationParameters AuthenticationParameters, PurchasePremiumDomainParameters CommandParameters, )
-    QueryBackOrder(AuthenticationParameters AuthenticationParameters, QueryBackOrderParameters CommandParameters, )
-    QueryContact(AuthenticationParameters AuthenticationParameters, QueryContactParameters CommandParameters, )
-    QueryDnsRecords(AuthenticationParameters AuthenticationParameters, QueryDnsRecordsParameters CommandParameters, )
-    QueryDnsZone(AuthenticationParameters AuthenticationParameters, QueryDnsZoneParameters CommandParameters, )
-    QueryDomain(AuthenticationParameters AuthenticationParameters, QueryDomainParameters CommandParameters, )
-    QueryDomainAuthcode(AuthenticationParameters AuthenticationParameters, QueryDomainAuthcodeParameters CommandParameters, )
-    QueryDomainContacts(AuthenticationParameters AuthenticationParameters, QueryDomainContactsParameters CommandParameters, )
-    QueryDomainDates(AuthenticationParameters AuthenticationParameters, QueryDomainDatesParameters CommandParameters, )
-    QueryDomainLaunch(AuthenticationParameters AuthenticationParameters, QueryDomainLaunchParameters CommandParameters, )
-    QueryDomainLock(AuthenticationParameters AuthenticationParameters, QueryDomainLockParameters CommandParameters, )
-    QueryDomainMemberContact(AuthenticationParameters AuthenticationParameters, QueryDomainMemberContactParameters CommandParameters, )
-    QueryDomainNameserverHosts(AuthenticationParameters AuthenticationParameters, QueryDomainNameserverHostsParameters CommandParameters, )
-    QueryDomainNameservers(AuthenticationParameters AuthenticationParameters, QueryDomainNameserversParameters CommandParameters, )
-    QueryDomainPrivacy(AuthenticationParameters AuthenticationParameters, QueryDomainPrivacyParameters CommandParameters, )
-    QueryDomainRenewalSettings(AuthenticationParameters AuthenticationParameters, QueryDomainRenewalSettingsParameters CommandParameters, )
-    QueryDomainTelCredentials(AuthenticationParameters AuthenticationParameters, QueryDomainTelCredentialsParameters CommandParameters, )
-    QueryEmailDomainBlackList(AuthenticationParameters AuthenticationParameters, QueryEmailDomainBlackListParameters CommandParameters, )
-    QueryEmailDomainWhiteList(AuthenticationParameters AuthenticationParameters, QueryEmailDomainWhiteListParameters CommandParameters, )
-    QueryEmailForwarder(AuthenticationParameters AuthenticationParameters, QueryEmailForwarderParameters CommandParameters, )
-    QueryEmailMailbox(AuthenticationParameters AuthenticationParameters, QueryEmailMailboxParameters CommandParameters, )
-    QueryEmailMailboxBlackList(AuthenticationParameters AuthenticationParameters, QueryEmailMailboxBlackListParameters CommandParameters, )
-    QueryEmailMailboxWhiteList(AuthenticationParameters AuthenticationParameters, QueryEmailMailboxWhiteListParameters CommandParameters, )
-    QueryFinancialReport(AuthenticationParameters AuthenticationParameters, QueryFinancialReportParameters CommandParameters, )
-    QueryLoginURL(AuthenticationParameters AuthenticationParameters, QueryLoginURLParameters CommandParameters, )
-    QueryManagementReport(AuthenticationParameters AuthenticationParameters, QueryManagementReportParameters CommandParameters, )
-    QueryNameserver(AuthenticationParameters AuthenticationParameters, QueryNameserverParameters CommandParameters, )
-    QueryPerformanceReport(AuthenticationParameters AuthenticationParameters, QueryPerformanceReportParameters CommandParameters, )
-    QueryPremiumDomain(AuthenticationParameters AuthenticationParameters, QueryPremiumDomainParameters CommandParameters, )
-    QueryPublishing(AuthenticationParameters AuthenticationParameters, QueryPublishingParameters CommandParameters, )
-    QueryPublishingControlURL(AuthenticationParameters AuthenticationParameters, QueryPublishingControlURLParameters CommandParameters, )
-    QueryResellerConfig(AuthenticationParameters AuthenticationParameters, QueryResellerConfigParameters CommandParameters, )
-    QuerySSL(AuthenticationParameters AuthenticationParameters, QuerySSLParameters CommandParameters, )
-    QuerySSLApproverEmails(AuthenticationParameters AuthenticationParameters, QuerySSLApproverEmailsParameters CommandParameters, )
-    QuerySSLStatus(AuthenticationParameters AuthenticationParameters, QuerySSLStatusParameters CommandParameters, )
-    QueryTrademark(AuthenticationParameters AuthenticationParameters, QueryTrademarkParameters CommandParameters, )
-    QueryTrademarkLabels(AuthenticationParameters AuthenticationParameters, QueryTrademarkLabelsParameters CommandParameters, )
-    QueryTrademarkSMD(AuthenticationParameters AuthenticationParameters, QueryTrademarkSMDParameters CommandParameters, )
-    QueryTransfer(AuthenticationParameters AuthenticationParameters, QueryTransferParameters CommandParameters, )
-    QueryTransfersAway(AuthenticationParameters AuthenticationParameters, QueryTransfersAwayParameters CommandParameters, )
-    QueryTransition(AuthenticationParameters AuthenticationParameters, QueryTransitionParameters CommandParameters, )
-    QueryUser(AuthenticationParameters AuthenticationParameters, QueryUserParameters CommandParameters, )
-    QueryUserGroup(AuthenticationParameters AuthenticationParameters, QueryUserGroupParameters CommandParameters, )
-    QueryUserRoles(AuthenticationParameters AuthenticationParameters, QueryUserRolesParameters CommandParameters, )
-    QueryWebHosting(AuthenticationParameters AuthenticationParameters, QueryWebHostingParameters CommandParameters, )
-    QueryWebHostingApps(AuthenticationParameters AuthenticationParameters, QueryWebHostingAppsParameters CommandParameters, )
-    QueryWebHostingDatabase(AuthenticationParameters AuthenticationParameters, QueryWebHostingDatabaseParameters CommandParameters, )
-    QueryWebHostingDatabaseUser(AuthenticationParameters AuthenticationParameters, QueryWebHostingDatabaseUserParameters CommandParameters, )
-    QueryWebHostingFTPUser(AuthenticationParameters AuthenticationParameters, QueryWebHostingFTPUserParameters CommandParameters, )
-    QueryWebHostingPackage(AuthenticationParameters AuthenticationParameters, QueryWebHostingPackageParameters CommandParameters, )
-    QueryWebHostingSharedSSL(AuthenticationParameters AuthenticationParameters, QueryWebHostingSharedSSLParameters CommandParameters, )
-    QueryWebHostingUpgrade(AuthenticationParameters AuthenticationParameters, QueryWebHostingUpgradeParameters CommandParameters, )
-    QueryWebHostingWebsite(AuthenticationParameters AuthenticationParameters, QueryWebHostingWebsiteParameters CommandParameters, )
-    QueryWebHostingWebsiteApp(AuthenticationParameters AuthenticationParameters, QueryWebHostingWebsiteAppParameters CommandParameters, )
-    RegisterDomain(AuthenticationParameters AuthenticationParameters, RegisterDomainParameters CommandParameters, )
-    ReissueSSL(AuthenticationParameters AuthenticationParameters, ReissueSSLParameters CommandParameters, )
-    RejectTransferAway(AuthenticationParameters AuthenticationParameters, RejectTransferAwayParameters CommandParameters, )
-    RenewDomain(AuthenticationParameters AuthenticationParameters, RenewDomainParameters CommandParameters, )
-    RenewEmailForwarder(AuthenticationParameters AuthenticationParameters, RenewEmailForwarderParameters CommandParameters, )
-    RenewEmailMailbox(AuthenticationParameters AuthenticationParameters, RenewEmailMailboxParameters CommandParameters, )
-    RenewPublishing(AuthenticationParameters AuthenticationParameters, RenewPublishingParameters CommandParameters, )
-    RenewSSL(AuthenticationParameters AuthenticationParameters, RenewSSLParameters CommandParameters, )
-    RenewWebHosting(AuthenticationParameters AuthenticationParameters, RenewWebHostingParameters CommandParameters, )
-    RequestBackOrder(AuthenticationParameters AuthenticationParameters, RequestBackOrderParameters CommandParameters, )
-    RequestTransfer(AuthenticationParameters AuthenticationParameters, RequestTransferParameters CommandParameters, )
-    RequestTransferAway(AuthenticationParameters AuthenticationParameters, RequestTransferAwayParameters CommandParameters, )
-    ResendDomainVerificationEmail(AuthenticationParameters AuthenticationParameters, ResendDomainVerificationEmailParameters CommandParameters, )
-    ResendSSLEmail(AuthenticationParameters AuthenticationParameters, ResendSSLEmailParameters CommandParameters, )
-    ResendTransferAdminEmail(AuthenticationParameters AuthenticationParameters, ResendTransferAdminEmailParameters CommandParameters, )
-    RestartTransfer(AuthenticationParameters AuthenticationParameters, RestartTransferParameters CommandParameters, )
-    RestartTransition(AuthenticationParameters AuthenticationParameters, RestartTransitionParameters CommandParameters, )
-    RestoreDomain(AuthenticationParameters AuthenticationParameters, RestoreDomainParameters CommandParameters, )
-    ResumeEmail(AuthenticationParameters AuthenticationParameters, ResumeEmailParameters CommandParameters, )
-    StorefrontAssignDomainToUser(AuthenticationParameters AuthenticationParameters, StorefrontAssignDomainToUserParameters CommandParameters, )
-    StorefrontCreatePackage(AuthenticationParameters AuthenticationParameters, StorefrontCreatePackageParameters CommandParameters, )
-    StorefrontCreateUser(AuthenticationParameters AuthenticationParameters, StorefrontCreateUserParameters CommandParameters, )
-    StorefrontDeleteUser(AuthenticationParameters AuthenticationParameters, StorefrontDeleteUserParameters CommandParameters, )
-    StorefrontModifyUser(AuthenticationParameters AuthenticationParameters, StorefrontModifyUserParameters CommandParameters, )
-    StorefrontQueryUser(AuthenticationParameters AuthenticationParameters, StorefrontQueryUserParameters CommandParameters, )
-    StorefrontQueryUsers(AuthenticationParameters AuthenticationParameters, StorefrontQueryUsersParameters CommandParameters, )
-    SuspendEmail(AuthenticationParameters AuthenticationParameters, SuspendEmailParameters CommandParameters, )
-    UnassignWebHostingDatabaseUser(AuthenticationParameters AuthenticationParameters, UnassignWebHostingDatabaseUserParameters CommandParameters, )
-    UnassignWebHostingFTPUser(AuthenticationParameters AuthenticationParameters, UnassignWebHostingFTPUserParameters CommandParameters, )
-    UnrenewDomain(AuthenticationParameters AuthenticationParameters, UnrenewDomainParameters CommandParameters, )
-    UpgradePublishing(AuthenticationParameters AuthenticationParameters, UpgradePublishingParameters CommandParameters, )
-    UpgradeWebHosting(AuthenticationParameters AuthenticationParameters, UpgradeWebHostingParameters CommandParameters, )
-    """
+
+def studly_case(string):
+    string = string.replace('ftp', 'FTP')
+    return string.replace('_', ' ').title().replace(' ', '')
