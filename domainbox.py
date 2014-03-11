@@ -241,8 +241,7 @@ class DomainBox(object):
     def request(self, name, **kwargs):
         command_params = self.load_command_params(name, **kwargs)
         service = self.service.getattr(name)
-        return service(AuthenticationParameters=self.auth_params,
-                       CommandParameters=command_params)
+        return service(self.auth_params, command_params)
 
     def load_command_params(self, name, **params):
         params_type = self.factory.create(DOMAINBOX_COMMANDS[name])
