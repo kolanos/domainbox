@@ -242,13 +242,13 @@ class DomainBox(object):
 
     def request(self, name, **kwargs):
         command_params = self.load_command_params(name, **kwargs)
-        service = self.service.__getattr__(name)
+        service = getattr(self.service, name)
         return service(self.auth_params, command_params)
 
     def load_command_params(self, name, **params):
         params_type = self.factory.create(DOMAINBOX_COMMANDS[name])
         for k, v in params.iteritems():
-            params_type.__setattr__(studly_case(k), v)
+            setattr(params_type, studly_case(k), v)
         return params_type
 
 
