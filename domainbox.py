@@ -233,7 +233,6 @@ class DomainBox(object):
         self.auth_params.Password = password
 
     def __getattr__(self, name):
-        name = studly_case(name)
         if name in DOMAINBOX_COMMANDS.keys():
             def request_handler(**kwargs):
                 return self.request(name, **kwargs)
@@ -248,10 +247,5 @@ class DomainBox(object):
     def load_command_params(self, name, **params):
         params_type = self.factory.create(DOMAINBOX_COMMANDS[name])
         for k, v in params.iteritems():
-            setattr(params_type, studly_case(k), v)
+            setattr(params_type, k, v)
         return params_type
-
-
-def studly_case(string):
-    string = string.replace('ftp', 'FTP')
-    return string.replace('_', ' ').title().replace(' ', '')
